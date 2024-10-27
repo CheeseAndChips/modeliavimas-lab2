@@ -11,6 +11,7 @@ packages = [
 
 [tool.poetry.dependencies]
 python = "^3.10"
+matplotlib = "^3.9.2"
 
 [build-system]
 requires = ["poetry-core"]

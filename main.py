@@ -50,8 +50,10 @@ def tex_tabulate(filename, *args, **kwargs):
     with open(os.path.join(LATEX_OUT_PATH, filename), 'w') as f:
         f.write(tabulate(*args, **kwargs))
 
-def get_figure_location(name):
-    return os.path.join('/tmp', name)
+def save_figure(name):
+    path = os.path.join(LATEX_OUT_PATH, name + '.pgf')
+    plt.savefig(path, format='pgf')
+    plt.close()
 
 def plot_simple(name, solutions):
     markers = ['+', 'x', '1']
@@ -60,7 +62,7 @@ def plot_simple(name, solutions):
         x, y = np.transpose(v)
         plt.plot(x, y, label=k, linewidth=1.0, marker=marker)
     plt.legend()
-    plt.savefig(get_figure_location(name), format='pdf')
+    save_figure(name)
 
 def plot_differences(name, base, solutions):
     markers = ['+', 'x', '1']
@@ -73,8 +75,7 @@ def plot_differences(name, base, solutions):
             assert abs(x1 - x2) < 1e-9
         plt.plot(x, (y - base_y), label=k, linewidth=1.0, marker=marker)
     plt.legend()
-    plt.savefig(get_figure_location(name), format='pdf')
-    plt.close()
+    save_figure(name)
 
 def plot_differences_keyed(name, solutions, base_name):
     assert base_name in solutions.keys()
@@ -84,6 +85,13 @@ def plot_differences_keyed(name, solutions, base_name):
     )
 
 if __name__ == '__main__':
+    matplotlib.use('pgf')
+    matplotlib.rcParams.update({
+        'pgf.texsystem': 'pdflatex',
+        'font.family': 'serif',
+        'text.usetex': True,
+        'pgf.rcfonts': False,
+    })
     os.makedirs(LATEX_OUT_PATH, exist_ok=True)
 
     tau1 = 0.1
@@ -120,14 +128,14 @@ if __name__ == '__main__':
         'RK2': evaluate_precision(rk2_sol, tau2, 2)
     }
 
-    plot_simple('tau1_simple.pdf', tau1_sols | {'solve_ivp': ivp_sol})
-    plot_simple('tau2_simple.pdf', tau2_sols | {'solve_ivp': ivp_sol})
+    plot_simple('tau1_simple', tau1_sols | {'solve_ivp': ivp_sol})
+    plot_simple('tau2_simple', tau2_sols | {'solve_ivp': ivp_sol})
 
-    plot_differences_keyed('tau1_diff.pdf', tau1_sols, 'RK2')
-    plot_differences_keyed('tau2_diff.pdf', tau2_sols, 'RK2')
+    plot_differences_keyed('tau1_diff', tau1_sols, 'RK2')
+    plot_differences_keyed('tau2_diff', tau2_sols, 'RK2')
 
-    plot_differences('tau1_diff_ivp.pdf', ivp_sol[::2], tau1_sols)
-    plot_differences('tau2_diff_ivp.pdf', ivp_sol, tau2_sols)
+    plot_differences('tau1_diff_ivp', ivp_sol[::2], tau1_sols)
+    plot_differences('tau2_diff_ivp', ivp_sol, tau2_sols)
 
     # tex_tabulate('rt4_t1.tex', rt4_points_t1, headers=['$t_n$', '$y_n$'], tablefmt='latex_raw')
     # tex_tabulate('rt4_t2.tex', rt4_points_t2, headers=['$t_n$', '$y_n$'], tablefmt='latex_raw')

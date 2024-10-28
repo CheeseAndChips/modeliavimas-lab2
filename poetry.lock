@@ -610,7 +610,21 @@ files = [
     {file = "six-1.16.0.tar.gz", hash = "sha256:1e61c37477a1626458e36f7b1d82aa5c9b094fa4802892072e49de9c60c4c926"},
 ]
 
+[[package]]
+name = "tabulate"
+version = "0.9.0"
+description = "Pretty-print tabular data"
+optional = false
+python-versions = ">=3.7"
+files = [
+    {file = "tabulate-0.9.0-py3-none-any.whl", hash = "sha256:024ca478df22e9340661486f85298cff5f6dcdba14f3813e8830015b9ed1948f"},
+    {file = "tabulate-0.9.0.tar.gz", hash = "sha256:0095b12bf5966de529c0feb1fa08671671b3368eec77d7ef7ab114be2c068b3c"},
+]
+
+[package.extras]
+widechars = ["wcwidth"]
+
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10"
-content-hash = "34e1bd62f600a15b65ae6fcdec7a425475434e4cb1210fee0b177e2ecabccf3b"
+content-hash = "2c1b64d1ec176d60713be0bd90dd44e4a7988c532d5a5adbc52b58da80c0ec92"

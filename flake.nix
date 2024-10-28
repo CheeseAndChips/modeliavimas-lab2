@@ -1,12 +1,19 @@
 {
   inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
   inputs.poetry2nix.url = "github:nix-community/poetry2nix";
+  inputs.flake-utils.url = "github:numtide/flake-utils";
 
-  outputs = { self, nixpkgs, poetry2nix }:
+  outputs = { self, nixpkgs, poetry2nix, flake-utils }:
     let
       supportedSystems = [ "x86_64-linux" "x86_64-darwin" "aarch64-linux" "aarch64-darwin" ];
       forAllSystems = nixpkgs.lib.genAttrs supportedSystems;
       pkgs = forAllSystems (system: nixpkgs.legacyPackages.${system});
+      docflake = import ./doc/flake.nix;
+      docflakeout = docflake.outputs {
+        inherit self;
+        inherit nixpkgs;
+        inherit flake-utils;
+      };
     in
     {
       packages = forAllSystems (system: let
@@ -19,6 +26,7 @@
         inherit (poetry2nix.lib.mkPoetry2Nix { pkgs = pkgs.${system}; }) mkPoetryEnv;
       in {
         default = pkgs.${system}.mkShellNoCC {
+          inputsFrom = [ docflakeout.packages.${system}.default ];
           packages = with pkgs.${system}; [
             (mkPoetryEnv { projectDir = self; })
             poetry

@@ -6,7 +6,7 @@ pkgs.stdenv.mkDerivation {
   buildInputs = with pkgs; [
     zathura
     (texlive.combine {
-      inherit (texlive) latexmk scheme-basic biber polyglossia luatexbase was caption setspace tocloft algorithms float biblatex silence csquotes mathtools physics tocbibind titlesec underscore;
+      inherit (texlive) latexmk scheme-basic biber polyglossia luatexbase was caption setspace tocloft algorithms float biblatex silence csquotes mathtools physics tocbibind titlesec underscore pgfplots;
     })
   ];
   buildPhase = ''

@@ -128,14 +128,16 @@ if __name__ == '__main__':
         'RK2': evaluate_precision(rk2_sol, tau2, 2)
     }
 
-    plot_simple('tau1_simple', tau1_sols | {'solve_ivp': ivp_sol})
-    plot_simple('tau2_simple', tau2_sols | {'solve_ivp': ivp_sol})
+    plot_simple('tau1_simple', tau1_sols | {'solve\\_ivp': ivp_sol})
+    plot_simple('tau2_simple', tau2_sols | {'solve\\_ivp': ivp_sol})
 
     plot_differences_keyed('tau1_diff', tau1_sols, 'RK2')
     plot_differences_keyed('tau2_diff', tau2_sols, 'RK2')
 
     plot_differences('tau1_diff_ivp', ivp_sol[::2], tau1_sols)
     plot_differences('tau2_diff_ivp', ivp_sol, tau2_sols)
+
+    # plot_simple('', ivp_sol, tau2_sols)
 
     # tex_tabulate('rt4_t1.tex', rt4_points_t1, headers=['$t_n$', '$y_n$'], tablefmt='latex_raw')
     # tex_tabulate('rt4_t2.tex', rt4_points_t2, headers=['$t_n$', '$y_n$'], tablefmt='latex_raw')

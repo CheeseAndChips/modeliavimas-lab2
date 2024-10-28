@@ -15,6 +15,11 @@
 \usepackage[nottoc]{tocbibind}
 \usepackage{tocloft}
 
+% plots
+\usepackage{pgfplots}
+\pgfplotsset{width=5cm,compat=1.9}
+\newcommand{\mathdefault}[1][]{} % to fix pgfplots
+
 \usepackage{titlesec}
 \newcommand{\sectionbreak}{\clearpage}
 
@@ -28,10 +33,9 @@
 %% norint pakeisti bibliografijos šaltinių numeravimą (skaitiniu arba raidiniu), pakeitimus atlikti VUMIFTemplateClass.cls 150 eilutėje
 
 % Author's MACROS
-\newcommand{\EE}{\mathbb{E}\,} % Mean
-\newcommand{\ee}{{\mathrm e}}  % nice exponent
-\newcommand{\RR}{\mathbb{R}}
-
+% variables
+\newcommand{\tone}{0.1}
+\newcommand{\ttwo}{0.05}
 
 \studijuprograma{\{Studijų programos\}} %Studijų programą įrašyti kilmininko linksniu (pavyzdžiui – Programų sistemų, Finansų ir draudimų matematikos ir t. t.)
 \darbotipas{\{Darbo tipas\}} % Bakalauro baigiamasis darbas arba magistro baigiamasis darbas
@@ -66,7 +70,7 @@ Analizuojamas Koši uždavinys pagal uždavinio sąlygą:
 
 Šį uždavinį spręsime 4-pakopiu Rungės-Kuto metodu ir dvipakopiu (kai $\sigma = 0.5$) Rungės-Kuto metodu. Sprendinius palyginsime su Python bibliotekos \texttt{spicy} metodu \texttt{spicy.integrate.solve\_ivp} gautais sprendiniais.
 
-\section{4-pakopis Rungės-Kutto metodas}
+\section{Keturpakopis Rungės-Kuto metodas}
 \begin{equation}
     \begin{cases}
         k_1 = f(t_n, y_n),\\
@@ -76,6 +80,62 @@ Analizuojamas Koši uždavinys pagal uždavinio sąlygą:
     \end{cases}
 \end{equation}
 \[ y_{n+1} = y_n + \frac{\tau}{6}(k_1 + 2k_2 + 2k_3 + k_4). \]
+
+\section{Dvipakopis Rungės-Kuto metodas}
+Dvipakopių Rugės-Kuto metodų šeima:
+\begin{equation}
+    \begin{cases}
+        k_1 = f(t_n, y_n),\\
+        k_2 = f(t_n + \frac{\tau}{2 \sigma}, y_n + \frac{\tau}{2 \sigma} k_1)
+    \end{cases}
+\end{equation}
+\[ y_{n+1} = y_n + \tau [(1 - \sigma) k_1 + \sigma k_2]\]
+
+Naudojant $\sigma = 0.5$ gauname konkretų prediktoriaus-korektoriaus metodą:
+\begin{equation}
+    \begin{cases}
+        k_1 = f(t_n, y_n),\\
+        k_2 = f(t_n + \tau, y_n + \tau k_1)
+    \end{cases}
+\end{equation}
+\[ y_{n+1} = y_n + \frac{\tau}{2} (k_1 + k_2). \]
+
+\begin{figure}
+    \begin{center}
+        \input{./pytex/tau1_simple.pgf}
+    \end{center}
+    \caption{Koši uždavinio sprendinių, gautų skirtingais metodais kai $\tau = \tone$, grafikas.}
+\end{figure}
+\begin{figure}
+    \begin{center}
+        \input{./pytex/tau2_simple.pgf}
+    \end{center}
+    \caption{Koši uždavinio sprendinių, gautų skirtingais metodais kai $\tau = \ttwo$, grafikas.}
+\end{figure}
+\begin{figure}
+    \begin{center}
+        \input{./pytex/tau1_diff.pgf}
+    \end{center}
+    \caption{Koši uždavinio sprendinių, gautų su \texttt{RK2} ir \texttt{RK4} metodais kai $\tau = \tone$, skirtumų grafikas.}
+\end{figure}
+\begin{figure}
+    \begin{center}
+        \input{./pytex/tau2_diff.pgf}
+    \end{center}
+    \caption{Koši uždavinio sprendinių, gautų kai $\tau = \ttwo$, skirtumo su \texttt{solve_ivp} sprendiniais grafikas.}
+\end{figure}
+\begin{figure}
+    \begin{center}
+        \input{./pytex/tau1_diff_ivp.pgf}
+    \end{center}
+    \caption{Koši uždavinio sprendinių, gautų kai $\tau = \tone$, grafikas.}
+\end{figure}
+\begin{figure}
+    \begin{center}
+        \input{./pytex/tau2_diff_ivp.pgf}
+    \end{center}
+    \caption{lol}
+\end{figure}
 
 % \bigskip
 % \input{./pytex/rt4_t1.tex}

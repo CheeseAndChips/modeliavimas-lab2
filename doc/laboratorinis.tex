@@ -14,6 +14,12 @@
 \usepackage{color,algorithm,algorithmic}
 \usepackage[nottoc]{tocbibind}
 \usepackage{tocloft}
+\usepackage{listings}
+
+\lstset{
+    basicstyle=\fontsize{8}{10}\ttfamily,
+    breaklines=true,
+}
 
 % plots
 \usepackage{pgfplots}
@@ -76,7 +82,7 @@ Uždavinį spręsime intervale $x \in [0; 1]$.
 
 \section{Analizė}
 \subsection{Keturpakopis Rungės-Kuto metodas}
-Pasirenkamas tinklo žingsnis \tau. $t_0$ prilyginamas analizuojamojo intervalo pradinei reikšmei, šiuo atveju $t_0 = 0$. $y_0 = 1$, nes uždavinyje pradinė sąlyga $u(0) = 1$. Tuomet kartojame iteracijas, kol pasiekiamas analizuojamo intervalo galas:
+Pasirenkamas tinklo žingsnis \tau. $t_0$ prilyginamas analizuojamojo intervalo pradinei reikšmei, šiuo atveju $t_0 = 0$. $y_0 = 1$, nes uždavinyje pradinė sąlyga $u(0) = 1$. Tuomet kartojame iteracijas, kol $t_n$ pasiekia analizuojamo intervalo galą:
 \begin{equation}
     \begin{cases}
         k_1 = f(t_n, y_n),\\
@@ -115,8 +121,8 @@ $y_{\tau_2}(t)$ - skaitinis sprendinys, gautas keturpakopiu Rungės-Kuto metodu 
 \end{figure}
 
 Panašų palyginimą galima atlikti ir su \texttt{scipy} biblioteka gautais sprendiniais:\\
-$\Delta(t) = y_{\tau}(t) - y_{ivp}(t)$, čia\\
-$y_{\tau}(t)$ - skaitinis sprendinys, gautas keturpakopiu Rungės-Kuto metodu su žingsniu $\tau$,\\
+\[ \Delta(t) = y_{\tau}(t) - y_{ivp}(t) \]
+čia $y_{\tau}(t)$ - skaitinis sprendinys, gautas keturpakopiu Rungės-Kuto metodu su žingsniu $\tau$,\\
 $y_{ivp}(t)$ - skaitinis sprendinys, gautas su \texttt{scipy} biblioteka.
 \begin{figure}[H]
     \begin{center}
@@ -216,7 +222,7 @@ $y_{s2}(t)$ - skaitinis sprendinys, gautas dvipakopiu Rungės-Kuto metodu kai $t
 \end{figure}
 
 \section{Paklaidų įvertinimas}
-Paklaidas įvertinsime Rungės metodu:
+Paklaidas įvertinsime Rungės metodu, kai $\tau = \ttwo$:
 \[ |u(T) - y_{\tau}| \approx \frac{|y_{2 \tau} - y_{\tau}|}{2^p - 1} \]\\
 čia $y_{\tau}$ - skaitinis sprendinys taške $t = T$, apskaičiuotas su žingsniu $\tau$,\\
 $y_{2 \tau}$ - skaitinis sprendinys taške $t = T$, apskaičiuotas su žingsniu $2 \tau$,\\
@@ -230,5 +236,6 @@ Ir analogiškai dvipakopiui metodui ($p = 2$):
 \[ |u(T) - y_{\tau}| \approx \input{./pytex/rk2_precision.tex} \]
 
 \section{Python kodas}
+\lstinputlisting[language=Python]{../main.py}
 
 \end{document}

@@ -45,8 +45,6 @@ def evaluate_precision(solver_fn, tau, p):
     solution_2tau = solver_fn(2 * tau)
     def tex_approx_abs_error(y2t, yt, p):
         return f'\\frac{{|{y2t} - {yt}|}}{{2^{p} - 1}}'
-
-    print(f'tau: {solution_2tau}, tau: {solution_tau}')
     val = np.abs(solution_2tau - solution_tau) / (2 ** p - 1)
     return PrecisionEval(val, tex_approx_abs_error(solution_2tau, solution_tau, p))
     
@@ -123,8 +121,6 @@ def join_tables(*tables):
     vals = tables[:,:,1]
     return np.concatenate(([tvals], vals)).transpose()
 
-# TODO: labels for charts
-# TODO: add code to appendix
 if __name__ == '__main__':
     matplotlib.use('pgf')
     matplotlib.rcParams.update({

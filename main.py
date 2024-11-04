@@ -52,6 +52,7 @@ def tex_tabulate(filename, *args, **kwargs):
 
 def save_figure(name):
     path = os.path.join(LATEX_OUT_PATH, name + '.pgf')
+    plt.tight_layout()
     plt.savefig(path, format='pgf')
     plt.close()
 
@@ -61,6 +62,8 @@ def plot_simple(name, solutions):
     for marker, (k, v) in zip(markers, solutions.items()):
         x, y = np.transpose(v)
         plt.plot(x, y, label=k, linewidth=1.0, marker=marker)
+    plt.xlabel('$t_n$')
+    plt.ylabel('$y_n$')
     plt.legend()
     save_figure(name)
 
@@ -80,7 +83,10 @@ def plot_differences(name, base, solutions, divide_base=None):
         for (x1, x2) in zip(x, base_x_it):
             assert abs(x1 - x2) < 1e-9
         plt.plot(x, (y - base_y_it), label=k, linewidth=1.0, marker=marker)
-    plt.legend()
+    plt.xlabel('$t_n$')
+    plt.ylabel('$\\Delta(t)$')
+    if len(solutions) > 1:
+        plt.legend()
     save_figure(name)
 
 def plot_differences_keyed(name, solutions, base_name):
@@ -109,6 +115,7 @@ def join_tables(*tables):
     return np.concatenate(([tvals], vals)).transpose()
 
 # TODO: labels for charts
+# TODO: add code to appendix
 if __name__ == '__main__':
     matplotlib.use('pgf')
     matplotlib.rcParams.update({
@@ -116,6 +123,7 @@ if __name__ == '__main__':
         'font.family': 'serif',
         'text.usetex': True,
         'pgf.rcfonts': False,
+        'figure.figsize': (6.2, 4), # default (6.4, 4.8)
     })
     os.makedirs(LATEX_OUT_PATH, exist_ok=True)
 
@@ -192,8 +200,8 @@ if __name__ == '__main__':
     plot_differences_keyed('tau1_diff', tau1_sols, 'RK2')
     plot_differences_keyed('tau2_diff', tau2_sols, 'RK2')
 
-    plot_differences('tau1_diff_ivp', ivp_sol[::2], tau1_sols)
-    plot_differences('tau2_diff_ivp', ivp_sol, tau2_sols)
+    # plot_differences('tau1_diff_ivp', ivp_sol[::2], tau1_sols)
+    # plot_differences('tau2_diff_ivp', ivp_sol, tau2_sols)
 
     tex_tabulate('rt4.tex', join_tables(zeroify(tau1_sols['RK4']), tau2_sols['RK4'], ivp_sol), headers=['$t_n$', '$y_n$, kai $\\tau = \\tone$', '$y_n$, kai $\\tau = \\ttwo$', '$y_n$ su \\texttt{solve\\_ivp}'], tablefmt='latex_raw', floatfmt=['g', '.8f', '.8f', '.8f'])
     tex_tabulate('rt2.tex', join_tables(zeroify(tau1_sols['RK2']), tau2_sols['RK2'], ivp_sol), headers=['$t_n$', '$y_n$, kai $\\tau = \\tone$', '$y_n$, kai $\\tau = \\ttwo$', '$y_n$ su \\texttt{solve\\_ivp}'], tablefmt='latex_raw', floatfmt=['g', '.8f', '.8f', '.8f'])

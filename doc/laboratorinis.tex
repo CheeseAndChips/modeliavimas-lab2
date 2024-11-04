@@ -90,28 +90,39 @@ $p$ - metodo tikslumo eilė (keturpakopiui metodui - $p = 4$, dvipakopiui - $p =
     \begin{center}
         \input{./pytex/rt4.tex}
     \end{center}
-    \caption{TODO}
+    \label{rt4tbl}
+    \caption{Skaitiniai sprendiniai, gauti keturpakopiu Rungės-Kuto metodu su skirtingais tinklo žingsniais ir naudojantis scipy biblioteka}
 \end{table}
 
-\begin{figure}
+\begin{figure}[H]
     \begin{center}
         \input{./pytex/rk4_simple.pgf}
     \end{center}
-    \caption{TODO}
+    \caption{Skaitiniai sprendiniai, gauti keturpakopiu Rungės-Kuto metodu su skirtingais tinklo žingsniais ir naudojantis scipy biblioteka}
 \end{figure}
 
-\begin{figure}
+% TODO: fix reference?
+Kadangi sprendiniai yra labai artimi vieni kitiems (iš \ref{rt4tbl} lentelės matome, kad skirtumas tarp sprendinių su tuo pačiu $t_n$ yra mažesnis už $10^{-4}$), šias funkcijas sunku atvaizduoti viename grafike taip, kad skirtumai būtų aiškiai matomi. Todėl atvaizduosime $\Delta(t)$, ką apibrėšime kaip:\\
+$\Delta(t) = y_{\tau_2}(t) - y_{\tau_1}(t)$, čia\\
+$y_{\tau_1}(t)$ - skaitinis sprendinys, gautas keturpakopiu Rungės-Kuto metodu kai $t_n = t$ ir $\tau = \tau_1 = \tone$,\\
+$y_{\tau_2}(t)$ - skaitinis sprendinys, gautas keturpakopiu Rungės-Kuto metodu kai $t_n = t$ ir $\tau = \tau_2 = \ttwo$.
+
+\begin{figure}[H]
     \begin{center}
         \input{./pytex/rk4_diff.pgf}
     \end{center}
-    \caption{TODO}
+    \caption{Skirtumas $\Delta(t)$ tarp skaitinių sprendinių gautų keturpakopiu Rungės-Kuto metodu su skirtingais tinklo žingsniais.}
 \end{figure}
 
-\begin{figure}
+Panašų palyginimą galima atlikti ir su \texttt{scipy} biblioteka gautais sprendiniais:\\
+$\Delta(t) = y_{\tau}(t) - y_{ivp}(t)$, čia\\
+$y_{\tau}(t)$ - skaitinis sprendinys, gautas keturpakopiu Rungės-Kuto metodu su žingsniu $\tau$,\\
+$y_{ivp}(t)$ - skaitinis sprendinys, gautas su \texttt{scipy} biblioteka.
+\begin{figure}[H]
     \begin{center}
         \input{./pytex/rk4_diff_ivp.pgf}
     \end{center}
-    \caption{TODO}
+    \caption{Skirtumas $\Delta(t)$ tarp skaitinių sprendinių gautų keturpakopiu Rungės-Kuto metodu ir naudojantis scipy biblioteka}
 \end{figure}
 
 \section{Dvipakopis Rungės-Kuto metodas}
@@ -124,7 +135,7 @@ Dvipakopių Rugės-Kuto metodų šeima:
 \end{equation}
 \[ y_{n+1} = y_n + \tau [(1 - \sigma) k_1 + \sigma k_2]\]
 
-Naudojant $\sigma = 0.5$ gauname konkretų prediktoriaus-korektoriaus metodą:
+Naudojant $\sigma = 0.5$ gauname konkretų prediktoriaus-korektoriaus metodą, kurį nagrinėsime:
 \begin{equation}
     \begin{cases}
         k_1 = f(t_n, y_n),\\
@@ -137,71 +148,71 @@ Naudojant $\sigma = 0.5$ gauname konkretų prediktoriaus-korektoriaus metodą:
     \begin{center}
         \input{./pytex/rt2.tex}
     \end{center}
-    \caption{TODO}
+    \caption{Skaitiniai sprendiniai, gauti dvipakopiu Rungės-Kuto metodu su skirtingais tinklo žingsniais ir naudojantis scipy biblioteka}
 \end{table}
 
-\begin{figure}
+\begin{figure}[H]
     \begin{center}
         \input{./pytex/rk2_simple.pgf}
     \end{center}
-    \caption{TODO}
+    \caption{Skaitiniai sprendiniai, gauti dvipakopiu Rungės-Kuto metodu su skirtingais tinklo žingsniais ir naudojantis scipy biblioteka}
 \end{figure}
 
-\begin{figure}
+Skirtumai tarp sprendinių yra maži, todėl vėl atvaizduojame $\Delta(t)$:\\
+$\Delta(t) = y_{\tau_2}(t) - y_{\tau_1}(t)$, čia\\
+$y_{\tau_1}(t)$ - skaitinis sprendinys, gautas dvipakopiu Rungės-Kuto metodu kai $t_n = t$ ir $\tau = \tau_1 = \tone$,\\
+$y_{\tau_2}(t)$ - skaitinis sprendinys, gautas dvipakopiu Rungės-Kuto metodu kai $t_n = t$ ir $\tau = \tau_2 = \ttwo$.
+
+\begin{figure}[H]
     \begin{center}
         \input{./pytex/rk2_diff.pgf}
     \end{center}
-    \caption{TODO}
+    \caption{Skirtumas $\Delta(t)$ tarp skaitinių sprendinių gautų dvipakopiu Rungės-Kuto metodu su skirtingais tinklo žingsniais.}
 \end{figure}
 
-\begin{figure}
+Palyginame ir su \texttt{scipy} bibliotekos sprendiniais:\\
+$\Delta(t) = y_{\tau}(t) - y_{ivp}(t)$, čia\\
+$y_{\tau}(t)$ - skaitinis sprendinys, gautas dvipakopiu Rungės-Kuto metodu su žingsniu $\tau$,\\
+$y_{ivp}(t)$ - skaitinis sprendinys, gautas su \texttt{scipy} biblioteka.
+\begin{figure}[H]
     \begin{center}
         \input{./pytex/rk2_diff_ivp.pgf}
     \end{center}
-    \caption{TODO}
+    \caption{Skirtumas $\Delta(t)$ tarp skaitinių sprendinių gautų dvipakopiu Rungės-Kuto metodu ir naudojantis scipy biblioteka}
 \end{figure}
 
 \section{Metodų palyginimas su vienodais tinklo žingsniais}
 
-\begin{figure}
+\begin{figure}[H]
     \begin{center}
         \input{./pytex/tau1_simple.pgf}
     \end{center}
-    \caption{TODO}
+    \caption{Skaitiniai sprendiniai, gauti skirtingais metodais kai $\tau = \tone$}.
 \end{figure}
 
-\begin{figure}
+\begin{figure}[H]
     \begin{center}
         \input{./pytex/tau2_simple.pgf}
     \end{center}
-    \caption{TODO}
+    \caption{Skaitiniai sprendiniai, gauti skirtingais metodais kai $\tau = \ttwo$}.
 \end{figure}
 
-\begin{figure}
+Vėl apsibrėžiame $\Delta(t)$:\\
+$\Delta(t) = y_{s1}(t) - y_{s2}(t)$, čia\\
+$y_{s1}(t)$ - skaitinis sprendinys, gautas keturpakopiu Rungės-Kuto metodu kai $t_n = t$,
+$y_{s2}(t)$ - skaitinis sprendinys, gautas dvipakopiu Rungės-Kuto metodu kai $t_n = t$.
+
+\begin{figure}[H]
     \begin{center}
         \input{./pytex/tau1_diff.pgf}
     \end{center}
-    \caption{TODO}
+    \caption{Skirtumas $\Delta(t)$ tarp skaitinių sprendinių gautų su skirtingais metodais kai $\tau = \tone$}.
 \end{figure}
 
-\begin{figure}
+\begin{figure}[H]
     \begin{center}
         \input{./pytex/tau2_diff.pgf}
     \end{center}
-    \caption{TODO}
-\end{figure}
-
-\begin{figure}
-    \begin{center}
-        \input{./pytex/tau1_diff_ivp.pgf}
-    \end{center}
-    \caption{TODO}
-\end{figure}
-
-\begin{figure}
-    \begin{center}
-        \input{./pytex/tau2_diff_ivp.pgf}
-    \end{center}
-    \caption{TODO}
+    \caption{Skirtumas $\Delta(t)$ tarp skaitinių sprendinių gautų su skirtingais metodais kai $\tau = \ttwo$}.
 \end{figure}
 \end{document}

@@ -68,12 +68,7 @@ Analizuojamas Koši uždavinys pagal uždavinio sąlygą:
     \end{cases}
 \end{equation}
 
-Šį uždavinį spręsime 4-pakopiu Rungės-Kuto metodu ir dvipakopiu (kai $\sigma = 0.5$) Rungės-Kuto metodu. Sprendinius palyginsime su Python bibliotekos \texttt{scipy} metodu \texttt{scipy.integrate.solve\_ivp} gautais sprendiniais. Gautus sprendinius vizualizuosime grafikais ir lentelėmis. Įvertinsime paklaidas Rungės metodu:
-
-\[ |u(T) - y_{\tau}| \approx \frac{|y_{2 \tau} - y_{\tau}|}{2^p - 1} \]
-čia $y_{\tau}$ - skaitinis sprendinys taške t = T, apskaičiuotas su žingsniu $\tau$,\\
-$y_{2 \tau}$ - skaitinis sprendinys taške t = T, apskaičiuotas su žingsniu $2 \tau$,\\
-$p$ - metodo tikslumo eilė (keturpakopiui metodui - $p = 4$, dvipakopiui - $p = 2$).
+Šį uždavinį spręsime 4-pakopiu Rungės-Kuto metodu ir dvipakopiu (kai $\sigma = 0.5$) Rungės-Kuto metodu. Sprendinius palyginsime su Python bibliotekos \texttt{scipy} metodu \texttt{scipy.integrate.solve\_ivp} gautais sprendiniais. Gautus sprendinius vizualizuosime grafikais ir lentelėmis. Įvertinsime paklaidas Rungės metodu.
 
 \section{Keturpakopis Rungės-Kuto metodas}
 \begin{equation}
@@ -215,4 +210,19 @@ $y_{s2}(t)$ - skaitinis sprendinys, gautas dvipakopiu Rungės-Kuto metodu kai $t
     \end{center}
     \caption{Skirtumas $\Delta(t)$ tarp skaitinių sprendinių gautų su skirtingais metodais kai $\tau = \ttwo$}.
 \end{figure}
+
+\section{Paklaidų įvertinimas}
+Paklaidas įvertinsime Rungės metodu:
+
+\[ |u(T) - y_{\tau}| \approx \frac{|y_{2 \tau} - y_{\tau}|}{2^p - 1} \]\\
+čia $y_{\tau}$ - skaitinis sprendinys taške $t = T$, apskaičiuotas su žingsniu $\tau$,\\
+$y_{2 \tau}$ - skaitinis sprendinys taške $t = T$, apskaičiuotas su žingsniu $2 \tau$,\\
+$p$ - metodo tikslumo eilė (keturpakopiui - $p = 4$, dvipakopiui - $p = 2$).
+
+Paklaidą apskaičiuojame keturpakopiui metodui ($p = 4$):
+\[ |u(T) - y_{\tau}| \approx \input{./pytex/rk4_precision.tex} \]
+
+Ir analogiškai dvipakopiui metodui ($p = 2$):
+\[ |u(T) - y_{\tau}| \approx \input{./pytex/rk2_precision.tex} \]
+
 \end{document}

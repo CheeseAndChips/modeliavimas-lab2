@@ -35,11 +35,20 @@ def run_rk2_sigma(fn, y0, interval, tau, sigma):
         y = y + tau * ((1 - sigma) * k1 + sigma * k2)
     return np.array(points)
 
+class PrecisionEval:
+    def __init__(self, val, tex):
+        self.val = val
+        self.tex = tex
+
 def evaluate_precision(solver_fn, tau, p):
     solution_tau = solver_fn(tau)
     solution_2tau = solver_fn(2 * tau)
-    # print('Precision solutions: ', solution_tau, solution_2tau)
-    return np.abs(solution_2tau - solution_tau) / (2 ** p - 1)
+    def tex_approx_abs_error(y2t, yt, p):
+        return f'\\frac{{|{y2t} - {yt}|}}{{2^{p} - 1}}'
+
+    print(f'tau: {solution_2tau}, tau: {solution_tau}')
+    val = np.abs(solution_2tau - solution_tau) / (2 ** p - 1)
+    return PrecisionEval(val, tex_approx_abs_error(solution_2tau, solution_tau, p))
     
 def generate_space(interval, step_size):
     a, b = interval
@@ -200,8 +209,20 @@ if __name__ == '__main__':
     plot_differences_keyed('tau1_diff', tau1_sols, 'RK2')
     plot_differences_keyed('tau2_diff', tau2_sols, 'RK2')
 
-    # plot_differences('tau1_diff_ivp', ivp_sol[::2], tau1_sols)
-    # plot_differences('tau2_diff_ivp', ivp_sol, tau2_sols)
+    def format_float(f):
+        regular_string = str(f)
+        if 'e' not in regular_string:
+            return regular_string
+        base, exponent = regular_string.split('e')
+        exponent = int(exponent)
+        return f'{base} \\cdot 10^{{{exponent}}}'
+
+    with open(os.path.join(LATEX_OUT_PATH, 'rk4_precision.tex'), 'w') as f:
+        f.write(f'{tau2_precision["RK4"].tex} \\approx {format_float(tau2_precision["RK4"].val)}')
+
+    with open(os.path.join(LATEX_OUT_PATH, 'rk2_precision.tex'), 'w') as f:
+        f.write(f'{tau2_precision["RK2"].tex} \\approx {format_float(tau2_precision["RK2"].val)}')
 
     tex_tabulate('rt4.tex', join_tables(zeroify(tau1_sols['RK4']), tau2_sols['RK4'], ivp_sol), headers=['$t_n$', '$y_n$, kai $\\tau = \\tone$', '$y_n$, kai $\\tau = \\ttwo$', '$y_n$ su \\texttt{solve\\_ivp}'], tablefmt='latex_raw', floatfmt=['g', '.8f', '.8f', '.8f'])
     tex_tabulate('rt2.tex', join_tables(zeroify(tau1_sols['RK2']), tau2_sols['RK2'], ivp_sol), headers=['$t_n$', '$y_n$, kai $\\tau = \\tone$', '$y_n$, kai $\\tau = \\ttwo$', '$y_n$ su \\texttt{solve\\_ivp}'], tablefmt='latex_raw', floatfmt=['g', '.8f', '.8f', '.8f'])
+

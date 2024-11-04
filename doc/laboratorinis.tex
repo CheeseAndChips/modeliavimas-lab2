@@ -68,7 +68,7 @@ Analizuojamas Koši uždavinys pagal uždavinio sąlygą:
     \end{cases}
 \end{equation}
 
-Šį uždavinį spręsime 4-pakopiu Rungės-Kuto metodu ir dvipakopiu (kai $\sigma = 0.5$) Rungės-Kuto metodu. Sprendinius palyginsime su Python bibliotekos \texttt{spicy} metodu \texttt{spicy.integrate.solve\_ivp} gautais sprendiniais.
+Šį uždavinį spręsime 4-pakopiu Rungės-Kuto metodu ir dvipakopiu (kai $\sigma = 0.5$) Rungės-Kuto metodu. Sprendinius palyginsime su Python bibliotekos \texttt{scipy} metodu \texttt{scipy.integrate.solve\_ivp} gautais sprendiniais.
 
 \section{Keturpakopis Rungės-Kuto metodas}
 \begin{equation}
@@ -80,6 +80,8 @@ Analizuojamas Koši uždavinys pagal uždavinio sąlygą:
     \end{cases}
 \end{equation}
 \[ y_{n+1} = y_n + \frac{\tau}{6}(k_1 + 2k_2 + 2k_3 + k_4). \]
+
+\input{./pytex/rt4.tex}
 
 \section{Dvipakopis Rungės-Kuto metodas}
 Dvipakopių Rugės-Kuto metodų šeima:
@@ -99,6 +101,8 @@ Naudojant $\sigma = 0.5$ gauname konkretų prediktoriaus-korektoriaus metodą:
     \end{cases}
 \end{equation}
 \[ y_{n+1} = y_n + \frac{\tau}{2} (k_1 + k_2). \]
+
+\input{./pytex/rt2.tex}
 
 \begin{figure}
     \begin{center}
@@ -122,7 +126,7 @@ Naudojant $\sigma = 0.5$ gauname konkretų prediktoriaus-korektoriaus metodą:
     \begin{center}
         \input{./pytex/tau2_diff.pgf}
     \end{center}
-    \caption{Koši uždavinio sprendinių, gautų kai $\tau = \ttwo$, skirtumo su \texttt{solve_ivp} sprendiniais grafikas.}
+    \caption{Koši uždavinio sprendinių, gautų kai $\tau = \ttwo$, skirtumo su \texttt{solve\_ivp} sprendiniais grafikas.}
 \end{figure}
 \begin{figure}
     \begin{center}
@@ -136,11 +140,5 @@ Naudojant $\sigma = 0.5$ gauname konkretų prediktoriaus-korektoriaus metodą:
     \end{center}
     \caption{lol}
 \end{figure}
-
-% \bigskip
-% \input{./pytex/rt4_t1.tex}
-% \input{./pytex/rt4_t2.tex}
-% \input{./pytex/rt2_t1.tex}
-% \input{./pytex/rt2_t2.tex}
 
 \end{document}

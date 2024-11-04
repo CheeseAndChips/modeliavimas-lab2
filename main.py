@@ -38,7 +38,7 @@ def run_rk2_sigma(fn, y0, interval, tau, sigma):
 def evaluate_precision(solver_fn, tau, p):
     solution_tau = solver_fn(tau)
     solution_2tau = solver_fn(2 * tau)
-    print('Precision solutions: ', solution_tau, solution_2tau)
+    # print('Precision solutions: ', solution_tau, solution_2tau)
     return np.abs(solution_2tau - solution_tau) / (2 ** p - 1)
     
 def generate_space(interval, step_size):
@@ -84,6 +84,24 @@ def plot_differences_keyed(name, solutions, base_name):
         {k: v for (k, v) in solutions.items() if k != base_name}
     )
 
+def zeroify(s):
+    result = [s[0]]
+    for t, v in s[1:]:
+        result += [((result[-1][0] + t) / 2, None)]
+        result += [(t, v)]
+    return result
+
+def join_tables(*tables):
+    for t in tables[1:]:
+        assert len(tables[0]) == len(t)
+        for (t1, _), (t2, _) in zip(tables[0], t):
+            assert abs(t1 - t2) <= 1e-9
+
+    tables = np.array(tables)
+    tvals = tables[0].transpose()[0]
+    vals = tables[:,:,1]
+    return np.concatenate(([tvals], vals)).transpose()
+
 if __name__ == '__main__':
     matplotlib.use('pgf')
     matplotlib.rcParams.update({
@@ -96,7 +114,7 @@ if __name__ == '__main__':
 
     tau1 = 0.1
     tau2 = 0.05
-    sigma = 1
+    sigma = 0.5
     y0 = 1
     interval = (0, 1)
 
@@ -139,7 +157,8 @@ if __name__ == '__main__':
 
     # plot_simple('', ivp_sol, tau2_sols)
 
-    # tex_tabulate('rt4_t1.tex', rt4_points_t1, headers=['$t_n$', '$y_n$'], tablefmt='latex_raw')
+    tex_tabulate('rt4.tex', join_tables(zeroify(tau1_sols['RK4']), tau2_sols['RK4'], ivp_sol), headers=['$t_n$', '$y_n$, kai $\\tau = \\tone$', '$y_n$, kai $\\tau = \\ttwo$', '$y_n$ su \\texttt{solve\\_ivp}'], tablefmt='latex_raw', floatfmt=['g', '.8f', '.8f', '.8f'])
+    tex_tabulate('rt2.tex', join_tables(zeroify(tau1_sols['RK2']), tau2_sols['RK2'], ivp_sol), headers=['$t_n$', '$y_n$, kai $\\tau = \\tone$', '$y_n$, kai $\\tau = \\ttwo$', '$y_n$ su \\texttt{solve\\_ivp}'], tablefmt='latex_raw', floatfmt=['g', '.8f', '.8f', '.8f'])
     # tex_tabulate('rt4_t2.tex', rt4_points_t2, headers=['$t_n$', '$y_n$'], tablefmt='latex_raw')
     # tex_tabulate('rt2_t1.tex', rt2_points_t1, headers=['$t_n$', '$y_n$'], tablefmt='latex_raw')
     # tex_tabulate('rt2_t2.tex', rt2_points_t2, headers=['$t_n$', '$y_n$'], tablefmt='latex_raw')

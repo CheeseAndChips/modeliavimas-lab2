@@ -68,7 +68,12 @@ Analizuojamas Koši uždavinys pagal uždavinio sąlygą:
     \end{cases}
 \end{equation}
 
-Šį uždavinį spręsime 4-pakopiu Rungės-Kuto metodu ir dvipakopiu (kai $\sigma = 0.5$) Rungės-Kuto metodu. Sprendinius palyginsime su Python bibliotekos \texttt{scipy} metodu \texttt{scipy.integrate.solve\_ivp} gautais sprendiniais.
+Šį uždavinį spręsime 4-pakopiu Rungės-Kuto metodu ir dvipakopiu (kai $\sigma = 0.5$) Rungės-Kuto metodu. Sprendinius palyginsime su Python bibliotekos \texttt{scipy} metodu \texttt{scipy.integrate.solve\_ivp} gautais sprendiniais. Gautus sprendinius vizualizuosime grafikais ir lentelėmis. Įvertinsime paklaidas Rungės metodu:
+
+\[ |u(T) - y_{\tau}| \approx \frac{|y_{2 \tau} - y_{\tau}|}{2^p - 1}} \]
+čia $y_{\tau}$ - skaitinis sprendinys taške t = T, apskaičiuotas su žingsniu $\tau$,\\
+$y_{2 \tau}$ - skaitinis sprendinys taške t = T, apskaičiuotas su žingsniu $2 \tau$,\\
+$p$ - metodo tikslumo eilė (keturpakopiui metodui - $p = 4$, dvipakopiui - $p = 2$).
 
 \section{Keturpakopis Rungės-Kuto metodas}
 \begin{equation}

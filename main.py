@@ -64,16 +64,22 @@ def plot_simple(name, solutions):
     plt.legend()
     save_figure(name)
 
-def plot_differences(name, base, solutions):
+def plot_differences(name, base, solutions, divide_base=None):
     markers = ['+', 'x', '1']
     assert len(markers) >= len(solutions)
     base_x, base_y = np.transpose(base)
-    for marker, (k, v) in zip(markers, solutions.items()):
+    if not divide_base:
+        divide_base = [False for _ in solutions]
+    for marker, (k, v), divide in zip(markers, solutions.items(), divide_base):
         x, y = np.transpose(v)
-        assert len(x) == len(base_x)
-        for (x1, x2) in zip(x, base_x):
+        if divide:
+            base_x_it, base_y_it = base_x[::2], base_y[::2]
+        else:
+            base_x_it, base_y_it = base_x, base_y
+        assert len(x) == len(base_x_it)
+        for (x1, x2) in zip(x, base_x_it):
             assert abs(x1 - x2) < 1e-9
-        plt.plot(x, (y - base_y), label=k, linewidth=1.0, marker=marker)
+        plt.plot(x, (y - base_y_it), label=k, linewidth=1.0, marker=marker)
     plt.legend()
     save_figure(name)
 
@@ -102,6 +108,7 @@ def join_tables(*tables):
     vals = tables[:,:,1]
     return np.concatenate(([tvals], vals)).transpose()
 
+# TODO: labels for charts
 if __name__ == '__main__':
     matplotlib.use('pgf')
     matplotlib.rcParams.update({
@@ -120,11 +127,15 @@ if __name__ == '__main__':
 
     ivp_sol = solve_ivp(fn, interval, [y0], t_eval=generate_space((0, 1), tau2), method='RK23')
     ivp_sol = np.array(list(zip(ivp_sol.t, ivp_sol.y[0])))
+    ivp_sol_dict = {'$\\texttt{solve\\_ivp}$': ivp_sol}
 
     rk4_at_tau = lambda t: run_rk4(fn, y0, interval, t)
     rk2_at_tau = lambda t: run_rk2_sigma(fn, y0, interval, t, sigma)
     rk4_sol = lambda t: rk4_at_tau(t)[-1][1]
     rk2_sol = lambda t: rk2_at_tau(t)[-1][1]
+
+    tau1_fmt = '$\\tau = {}$'.format(tau1)
+    tau2_fmt = '$\\tau = {}$'.format(tau2)
 
     tau1_sols = {
         'RK4': rk4_at_tau(tau1),
@@ -134,6 +145,26 @@ if __name__ == '__main__':
     tau2_sols = {
         'RK4': rk4_at_tau(tau2),
         'RK2': rk2_at_tau(tau2)
+    }
+
+    rk4_sols = {
+        tau1_fmt: tau1_sols['RK4'],
+        tau2_fmt: tau2_sols['RK4'],
+    }
+
+    rk2_sols = {
+        tau1_fmt: tau1_sols['RK2'],
+        tau2_fmt: tau2_sols['RK2'],
+    }
+
+    rk4_sols_norm = {
+        tau1_fmt: rk4_sols[tau1_fmt],
+        tau2_fmt: rk4_sols[tau2_fmt][::2]
+    }
+
+    rk2_sols_norm = {
+        tau1_fmt: rk2_sols[tau1_fmt],
+        tau2_fmt: rk2_sols[tau2_fmt][::2]
     }
 
     tau1_precision = {
@@ -146,8 +177,17 @@ if __name__ == '__main__':
         'RK2': evaluate_precision(rk2_sol, tau2, 2)
     }
 
-    plot_simple('tau1_simple', tau1_sols | {'solve\\_ivp': ivp_sol})
-    plot_simple('tau2_simple', tau2_sols | {'solve\\_ivp': ivp_sol})
+    plot_simple('rk4_simple', rk4_sols | ivp_sol_dict)
+    plot_simple('rk2_simple', rk2_sols | ivp_sol_dict)
+
+    plot_differences_keyed('rk4_diff', rk4_sols_norm, tau1_fmt)
+    plot_differences_keyed('rk2_diff', rk2_sols_norm, tau1_fmt)
+
+    plot_differences('rk4_diff_ivp', ivp_sol, rk4_sols, divide_base=[True, False])
+    plot_differences('rk2_diff_ivp', ivp_sol, rk2_sols, divide_base=[True, False])
+
+    plot_simple('tau1_simple', tau1_sols | ivp_sol_dict)
+    plot_simple('tau2_simple', tau2_sols | ivp_sol_dict)
 
     plot_differences_keyed('tau1_diff', tau1_sols, 'RK2')
     plot_differences_keyed('tau2_diff', tau2_sols, 'RK2')
@@ -155,11 +195,5 @@ if __name__ == '__main__':
     plot_differences('tau1_diff_ivp', ivp_sol[::2], tau1_sols)
     plot_differences('tau2_diff_ivp', ivp_sol, tau2_sols)
 
-    # plot_simple('', ivp_sol, tau2_sols)
-
     tex_tabulate('rt4.tex', join_tables(zeroify(tau1_sols['RK4']), tau2_sols['RK4'], ivp_sol), headers=['$t_n$', '$y_n$, kai $\\tau = \\tone$', '$y_n$, kai $\\tau = \\ttwo$', '$y_n$ su \\texttt{solve\\_ivp}'], tablefmt='latex_raw', floatfmt=['g', '.8f', '.8f', '.8f'])
     tex_tabulate('rt2.tex', join_tables(zeroify(tau1_sols['RK2']), tau2_sols['RK2'], ivp_sol), headers=['$t_n$', '$y_n$, kai $\\tau = \\tone$', '$y_n$, kai $\\tau = \\ttwo$', '$y_n$ su \\texttt{solve\\_ivp}'], tablefmt='latex_raw', floatfmt=['g', '.8f', '.8f', '.8f'])
-    # tex_tabulate('rt4_t2.tex', rt4_points_t2, headers=['$t_n$', '$y_n$'], tablefmt='latex_raw')
-    # tex_tabulate('rt2_t1.tex', rt2_points_t1, headers=['$t_n$', '$y_n$'], tablefmt='latex_raw')
-    # tex_tabulate('rt2_t2.tex', rt2_points_t2, headers=['$t_n$', '$y_n$'], tablefmt='latex_raw')
-    

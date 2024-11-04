@@ -70,7 +70,7 @@ Analizuojamas Koši uždavinys pagal uždavinio sąlygą:
 
 Šį uždavinį spręsime 4-pakopiu Rungės-Kuto metodu ir dvipakopiu (kai $\sigma = 0.5$) Rungės-Kuto metodu. Sprendinius palyginsime su Python bibliotekos \texttt{scipy} metodu \texttt{scipy.integrate.solve\_ivp} gautais sprendiniais. Gautus sprendinius vizualizuosime grafikais ir lentelėmis. Įvertinsime paklaidas Rungės metodu:
 
-\[ |u(T) - y_{\tau}| \approx \frac{|y_{2 \tau} - y_{\tau}|}{2^p - 1}} \]
+\[ |u(T) - y_{\tau}| \approx \frac{|y_{2 \tau} - y_{\tau}|}{2^p - 1} \]
 čia $y_{\tau}$ - skaitinis sprendinys taške t = T, apskaičiuotas su žingsniu $\tau$,\\
 $y_{2 \tau}$ - skaitinis sprendinys taške t = T, apskaičiuotas su žingsniu $2 \tau$,\\
 $p$ - metodo tikslumo eilė (keturpakopiui metodui - $p = 4$, dvipakopiui - $p = 2$).
@@ -86,7 +86,33 @@ $p$ - metodo tikslumo eilė (keturpakopiui metodui - $p = 4$, dvipakopiui - $p =
 \end{equation}
 \[ y_{n+1} = y_n + \frac{\tau}{6}(k_1 + 2k_2 + 2k_3 + k_4). \]
 
-\input{./pytex/rt4.tex}
+\begin{table}[H]
+    \begin{center}
+        \input{./pytex/rt4.tex}
+    \end{center}
+    \caption{TODO}
+\end{table}
+
+\begin{figure}
+    \begin{center}
+        \input{./pytex/rk4_simple.pgf}
+    \end{center}
+    \caption{TODO}
+\end{figure}
+
+\begin{figure}
+    \begin{center}
+        \input{./pytex/rk4_diff.pgf}
+    \end{center}
+    \caption{TODO}
+\end{figure}
+
+\begin{figure}
+    \begin{center}
+        \input{./pytex/rk4_diff_ivp.pgf}
+    \end{center}
+    \caption{TODO}
+\end{figure}
 
 \section{Dvipakopis Rungės-Kuto metodas}
 Dvipakopių Rugės-Kuto metodų šeima:
@@ -107,43 +133,75 @@ Naudojant $\sigma = 0.5$ gauname konkretų prediktoriaus-korektoriaus metodą:
 \end{equation}
 \[ y_{n+1} = y_n + \frac{\tau}{2} (k_1 + k_2). \]
 
-\input{./pytex/rt2.tex}
+\begin{table}[H]
+    \begin{center}
+        \input{./pytex/rt2.tex}
+    \end{center}
+    \caption{TODO}
+\end{table}
+
+\begin{figure}
+    \begin{center}
+        \input{./pytex/rk2_simple.pgf}
+    \end{center}
+    \caption{TODO}
+\end{figure}
+
+\begin{figure}
+    \begin{center}
+        \input{./pytex/rk2_diff.pgf}
+    \end{center}
+    \caption{TODO}
+\end{figure}
+
+\begin{figure}
+    \begin{center}
+        \input{./pytex/rk2_diff_ivp.pgf}
+    \end{center}
+    \caption{TODO}
+\end{figure}
+
+\section{Metodų palyginimas su vienodais tinklo žingsniais}
 
 \begin{figure}
     \begin{center}
         \input{./pytex/tau1_simple.pgf}
     \end{center}
-    \caption{Koši uždavinio sprendinių, gautų skirtingais metodais kai $\tau = \tone$, grafikas.}
+    \caption{TODO}
 \end{figure}
+
 \begin{figure}
     \begin{center}
         \input{./pytex/tau2_simple.pgf}
     \end{center}
-    \caption{Koši uždavinio sprendinių, gautų skirtingais metodais kai $\tau = \ttwo$, grafikas.}
+    \caption{TODO}
 \end{figure}
+
 \begin{figure}
     \begin{center}
         \input{./pytex/tau1_diff.pgf}
     \end{center}
-    \caption{Koši uždavinio sprendinių, gautų su \texttt{RK2} ir \texttt{RK4} metodais kai $\tau = \tone$, skirtumų grafikas.}
+    \caption{TODO}
 \end{figure}
+
 \begin{figure}
     \begin{center}
         \input{./pytex/tau2_diff.pgf}
     \end{center}
-    \caption{Koši uždavinio sprendinių, gautų kai $\tau = \ttwo$, skirtumo su \texttt{solve\_ivp} sprendiniais grafikas.}
+    \caption{TODO}
 \end{figure}
+
 \begin{figure}
     \begin{center}
         \input{./pytex/tau1_diff_ivp.pgf}
     \end{center}
-    \caption{Koši uždavinio sprendinių, gautų kai $\tau = \tone$, grafikas.}
+    \caption{TODO}
 \end{figure}
+
 \begin{figure}
     \begin{center}
         \input{./pytex/tau2_diff_ivp.pgf}
     \end{center}
-    \caption{lol}
+    \caption{TODO}
 \end{figure}
-
 \end{document}
